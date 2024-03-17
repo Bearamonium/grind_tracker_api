@@ -1,7 +1,7 @@
 from init import db, ma
 from marshmallow import fields
 
-class Card(db.Model):
+class Session_Loot(db.Model):
     __tablename__ = "session_loot"
 
     id = db.Column(db.Integer, primary_key=True)

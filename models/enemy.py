@@ -1,7 +1,7 @@
 from init import db, ma
 from marshmallow import fields
 
-class Card(db.Model):
+class Enemy(db.Model):
     __tablename__ = "enemy"
 
     id = db.Column(db.Integer, primary_key=True)
