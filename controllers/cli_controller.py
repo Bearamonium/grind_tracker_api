@@ -25,33 +25,27 @@ def drop_tables():
 def seed_tables():
     areas = [
         Area(
-            id = 1,
-            name = "Polly's Forest",
-            location = "Kamasylvia",
+            name ="Polly's Forest",
+            location ="Kamasylvia",
         ),
         Area(
-            id = 2,
-            name = "Manshaum Forest",
-            location = "Kamasylvia",
+            name ="Manshaum Forest",
+            location ="Kamasylvia",
         ),
         Area(
-            id = 3,
-            name = "Sherekhan Necropolis",
+            name ="Sherekhan Necropolis",
             location = "Dreighan",
         ),
         Area(
-            id = 4,
-            name = "Tshira Ruins",
+            name ="Tshira Ruins",
             location = "Dreighan",
         ),
         Area(
-            id = 5,
-            name = "Cadry Ruins",
+            name ="Cadry Ruins",
             location = "Valencia",
         ),
         Area(
-            id = 6,
-            name = "Desert Naga Temple",
+            name ="Desert Naga Temple",
             location = "Valencia",
         )
     ]
@@ -102,52 +96,52 @@ def seed_tables():
         Enemy(
             area_id=1,
             name="Red Skirt Poison Mushroom",
-            experience="600"
+            experience=600
         ),
         Enemy(
             area_id=2,
             name="Manshaum Hut",
-            experience="529"
+            experience=529
         ),
         Enemy(
             area_id=2,
             name="Manshaum Totem",
-            experience="400"
+            experience=400
         ),
         Enemy(
             area_id=2,
             name="Manshaum Narc's Spear",
-            experience="400"
+            experience=400
         ),
         Enemy(
             area_id=2,
             name="Manshaum Fighter",
-            experience="523"
+            experience=523
         ),
         Enemy(
             area_id=2,
             name="Manshaum Hunter",
-            experience="425"
+            experience=425
         ),
         Enemy(
             area_id=2,
             name="Manshaum Warrior",
-            experience="511"
+            experience=511
         ),
         Enemy(
             area_id=2,
             name="Manshaum Shaman",
-            experience="325"
+            experience=325
         ),
         Enemy(
             area_id=2,
             name="Manshaum Great Warrior",
-            experience="1098"
+            experience=1098
         ),
         Enemy(
             area_id=2,
             name="Manshaum Charm",
-            experience="241"
+            experience=241
         )
     ]
 
