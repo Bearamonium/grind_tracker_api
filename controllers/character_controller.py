@@ -5,7 +5,7 @@ from jwt import ExpiredSignatureError
 from sqlalchemy.exc import IntegrityError
 from marshmallow import ValidationError
 
-from init import db, bcrypt
+from init import db
 from models.character import Character, character_schema
 
 character_bp = Blueprint('character', __name__, url_prefix='/character')
