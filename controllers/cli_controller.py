@@ -7,7 +7,7 @@ from models.enemy import Enemy
 from models.loot import Loot
 from models.session_loot import Session_Loot
 from models.session_tracker import Session_Tracker
-from models.user import User
+from models.users import User
 
 db_commands = Blueprint('db', __name__)
 
