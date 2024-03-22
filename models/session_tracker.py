@@ -1,7 +1,7 @@
 from init import db, ma
 from marshmallow import fields
 
-class Session_Tracker(db.Model):
+class SessionTracker(db.Model):
     __tablename__ = "session_tracker"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -14,3 +14,8 @@ class Session_Tracker(db.Model):
     area_id = db.Column(db.Integer, db.ForeignKey('area.id'), nullable=False)
     character_id = db.Column(db.Integer, db.ForeignKey('character.id'), nullable=False)
 
+class SessionTrackerSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'start_time', 'end_time', 'duration', 'experience_gain', 'silver_gain', 'area_id', 'character_id')
+
+session_schema = SessionTrackerSchema()
