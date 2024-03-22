@@ -6,7 +6,7 @@ from flask_jwt_extended import create_access_token, jwt_required
 from sqlalchemy.exc import IntegrityError
 
 from init import db, bcrypt
-from models.user import User, UserSchema
+from models.users import User, user_schema
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -25,12 +25,12 @@ def user_registration():
         # Add new user to the database and then commit changes to the session
         db.session.add(user)
         db.session.commit()
-        return UserSchema(exclude=["password"]).dump(user), 201
+        return user_schema.dump(user), 201
     except IntegrityError as err:
         if err.orig.pgcode == errorcodes.NOT_NULL_VIOLATION:
             return {"error": f"The {err.orig.diag.column_name} is required."}
         if err.orig.pgcode == errorcodes.UNIQUE_VIOLATION:
-            return {"error": "This email address is already in use. Please either try again with another email address or login."}, 409
+            return {"error": "This email address or username is already in use. Please either try again with another email address/username, or login."}, 409
 
 # Handles login requests for users already in the database
 @auth_bp.route("/login", methods=["POST"])
