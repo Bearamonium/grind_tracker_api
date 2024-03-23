@@ -15,10 +15,10 @@ class SessionLoot(db.Model):
 
 class SessionLootSchema(ma.Schema):
 
-    session_tracker = fields.List(fields.Nested('SessionTrackerSchema'))
+    session_tracker = fields.Nested('SessionTrackerSchema', only=['id', 'character_id'])
 
     class Meta:
-        fields = ('id', 'loot_id', 'quantity_obtained')
+        fields = ('id', 'loot_id', 'quantity_obtained', 'session_tracker')
 
 session_loot_schema = SessionLootSchema()
 session_loots_schema = SessionLootSchema(many=True)
