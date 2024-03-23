@@ -24,5 +24,8 @@ def create_app():
     from controllers.character_controller import character_bp
     app.register_blueprint(character_bp)
 
+    from controllers.session_controller import sessions_bp
+    app.register_blueprint(sessions_bp)
+
     return app
 

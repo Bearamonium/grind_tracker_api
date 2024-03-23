@@ -14,6 +14,8 @@ class SessionTracker(db.Model):
     area_id = db.Column(db.Integer, db.ForeignKey('area.id'), nullable=False)
     character_id = db.Column(db.Integer, db.ForeignKey('character.id'), nullable=False)
 
+    loot = db.relationship('SessionLoot', backref='session_tracker', cascade='delete-orphan')
+
 class SessionTrackerSchema(ma.Schema):
     class Meta:
         fields = ('id', 'start_time', 'end_time', 'duration', 'experience_gain', 'silver_gain', 'area_id', 'character_id')
