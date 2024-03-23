@@ -6,6 +6,6 @@ class Loot(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    description = db.Column(db.String(40))
+    description = db.Column(db.String)
     drop_rate = db.Column(db.Float)
-    sale_price = db.Column(db.Integer)
+    sale_price = db.Column(db.BigInteger)
