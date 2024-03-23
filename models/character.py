@@ -23,11 +23,19 @@ class Character(db.Model):
     class_name = db.Column(db.String, nullable=False)
 
     session_tracker = db.relationship('SessionTracker', back_populates='character', cascade='all, delete')
+    user = db.relationship('User', back_populates='characters')
 
 class CharacterSchema(ma.Schema):
+    class Meta: 
+        fields = ('id', 'name', 'level', 'class_name', 'user', 'session_tracker')
+
     id = fields.Integer()
     name = fields.String(required=True, validate=Length(min=3, max=15, error="Name must be between 3 and 15 characters long."))
     level = fields.Integer(required=True, validate=Range(min=1, max=67, error="Level must be between 1 and 67."))
     class_name = LimitedChoiceField(required=True, choices=["Warrior", "Maegu", "Woosa", "Witch", "Wizard", "Beserker", "Hashashin", "Lahn", "Striker", "Mystic", "Shai", "Corsair", "Maehwa", "Musa", "Valkyrie", "Ranger", "Archer", "Sage", "Scholar", "Guardian"])
 
+    session_tracker = fields.List(fields.Nested('SessionTracker', only=['id']))
+    user = fields.Nested('UserSchema', only=['username'])
+
 character_schema = CharacterSchema()
+characters_schema = CharacterSchema(many=True)

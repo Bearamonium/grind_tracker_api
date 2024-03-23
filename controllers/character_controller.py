@@ -1,11 +1,17 @@
+# Import flask commands for requesting and returning information along with user authentication
 from flask import Blueprint, request, jsonify
-from psycopg2 import errorcodes
 from flask_jwt_extended import jwt_required, get_jwt_identity
+
+# Import errorcodes for error handling
+from psycopg2 import errorcodes
 from jwt import ExpiredSignatureError 
 from sqlalchemy.exc import IntegrityError
 from marshmallow import ValidationError
 
+# Import SQLAlchemy
 from init import db
+
+# Import relevant models
 from models.character import Character, character_schema
 
 character_bp = Blueprint('character', __name__, url_prefix='/character')
@@ -16,18 +22,20 @@ character_bp = Blueprint('character', __name__, url_prefix='/character')
 def create_character():
     try:
         # Check if user has a valid JWT token
-        user_id = get_jwt_identity()  # Will return None if no valid token exists
+        user = get_jwt_identity()  # Will return None if no valid token exists
 
         # User is authenticated
         character_info = request.get_json()
+
         # Initialise object of CharacterSchema to check data against any possible validation errors from the marshmallow schema
         character_data = character_schema.load(character_info)
+
         # Chreate character object based on validated information
         character = Character(
             name=character_data.get('name'),
             class_name=character_data.get('class_name'),
             level=character_data.get('level'),
-            user_id=user_id
+            user_id=user
         )
         # Add character and commit back to the database
         db.session.add(character)
@@ -86,12 +94,27 @@ def edit_character(character_id):
     
     except IntegrityError as err:
         if err.orig.pgcode == errorcodes.UNIQUE_VIOLATION:
-            return jsonify({"error": "Character name already exists. Please enter another and try again."})
+            return jsonify({"error": "Character name already exists. Please enter another and try again."}), 400
 
     except Exception as err:
         print(f"An unexpected error occured: {err}")
         return jsonify({"error": "An error occured while processing your request. Please try again later."}), 400
+
+@character_bp.route('/delete/<int:character_id>', methods=["DELETE"])
+@jwt_required()
+def delete_character(character_id):
+    stmt = db.select(Character).where(Character.id==character_id)
+    character = db.session.scalar(stmt)
+
+    if character:
+        db.session.delete(character)
+        db.session.commit()
+
+        return jsonify({"message": f"{character.name} has now been deleted successfully."})
     
+    else: 
+        return jsonify({"error": f"Character with id {character_id} not found."})
+
 @character_bp.route('/characters', methods=["GET"])
 @jwt_required()
 def get_characters():
