@@ -10,11 +10,14 @@ class User(db.Model):
     password = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False, unique=True)
 
+    characters = db.relationship('Character', back_populates='user', cascade='all, delete')
 
 class UserSchema(ma.Schema):
 
     class Meta:
-        fields = ('id', 'username', 'email', 'password')
+        fields = ('id', 'username', 'email', 'password', 'characters')
+
+    characters = fields.List(fields.Nested('CharacterSchema', exclude=['user']))
 
 user_schema = UserSchema(exclude=['password'])
 users_schema = UserSchema(many=True, exclude=['password'])
