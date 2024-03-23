@@ -9,6 +9,7 @@ def create_app():
     # Configurations
     app.config["SQLALCHEMY_DATABASE_URI"]=os.environ.get("DATABASE_URI")
     app.config["JWT_SECRET_KEY"]=os.environ.get("JWT_SECRET_KEY")
+    app.config["JSON_SORT_KEYS"] = False
 
     db.init_app(app)
     ma.init_app(app)
@@ -23,6 +24,12 @@ def create_app():
 
     from controllers.character_controller import character_bp
     app.register_blueprint(character_bp)
+
+    from controllers.session_controller import sessions_bp
+    app.register_blueprint(sessions_bp)
+
+    from controllers.lookup_controller import lookup_bp
+    app.register_blueprint(lookup_bp)
 
     return app
 
