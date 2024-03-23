@@ -22,6 +22,8 @@ class Character(db.Model):
     level = db.Column(db.Integer, nullable=False)
     class_name = db.Column(db.String, nullable=False)
 
+    session_tracker = db.relationship('SessionTracker', back_populates='character', cascade='all, delete')
+
 class CharacterSchema(ma.Schema):
     id = fields.Integer()
     name = fields.String(required=True, validate=Length(min=3, max=15, error="Name must be between 3 and 15 characters long."))
