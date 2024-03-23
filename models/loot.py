@@ -9,3 +9,4 @@ class Loot(db.Model):
     description = db.Column(db.String)
     drop_rate = db.Column(db.Float)
     sale_price = db.Column(db.BigInteger)
+
