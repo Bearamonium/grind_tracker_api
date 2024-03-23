@@ -6,5 +6,5 @@ class Enemy(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     area_id = db.Column(db.Integer, db.ForeignKey('area.id'), nullable=False)
-    name = db.Column(db.String(40))
+    name = db.Column(db.String)
     experience = db.Column(db.Integer)
