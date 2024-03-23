@@ -10,6 +10,7 @@ class User(db.Model):
     password = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False, unique=True)
 
+    characters = db.relationship('Character', backref='user', cascade='all, delete')
 
 class UserSchema(ma.Schema):
 
