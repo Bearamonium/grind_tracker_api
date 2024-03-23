@@ -11,6 +11,7 @@ class SessionLoot(db.Model):
     session_tracker_id = db.Column(db.Integer, db.ForeignKey('session_tracker.id'), nullable=False)
 
     session_tracker = db.relationship('SessionTracker', back_populates='session_loot')
+    loot = db.relationship('Loot', back_populates='session_loot')
 
 class SessionLootSchema(ma.Schema):
 

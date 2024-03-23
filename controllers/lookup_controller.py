@@ -7,6 +7,7 @@ from init import db
 # Import relevant models & schemas
 from models.area import areas_schema, area_schema, Area
 from models.enemy import enemies_schema, Enemy
+from models.loot import loot_schema, loot_item_schema, Loot
 
 lookup_bp = Blueprint('lookup', __name__, url_prefix='/lookup')
 
@@ -40,3 +41,25 @@ def get_enemies():
     enemies = db.session.scalars(stmt)
     # Return result to the user
     return enemies_schema.dump(enemies), 200
+
+# Route for obtaining list of available loot in game - limited model structure so no relationship with enemy or area
+@lookup_bp.route('/loot', methods=["GET"])
+def get_loot():
+    # Obtain information from the database
+    stmt = db.select(Loot).order_by(Loot.name.asc())
+    loot = db.session.scalars(stmt)
+    # Return loot data back to the user
+    return loot_schema.dump(loot)
+
+# Route for obtaining one specific loot item
+@lookup_bp.route('/loot_item', methods=["GET"])
+def get_loot_item(loot_id):
+    # Obtain information from the database
+    stmt = db.select(Loot).filter_by(id=loot_id)
+    loot_item = db.session.scalar(stmt)
+    # Return result to user of loot item exists
+    if loot_item: 
+        return loot_item_schema.dump(loot_item)
+    else: 
+        return jsonify({"error": f"Loot with the id {loot_id} was not found. Please try again with a different id."})
+    
