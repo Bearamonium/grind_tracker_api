@@ -1,11 +1,11 @@
-from flask import Blueprint, request, jsonify, render_template
+from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import datetime
 
 from init import db
 from models.character import Character
 from models.session_tracker import session_schema, SessionTracker
-from models.session_loot import SessionLoot, session_loots_schema, session_loot_schema
+from models.session_loot import SessionLoot, session_loots_schema
 from sqlalchemy.exc import IntegrityError, DataError
 from psycopg2 import errorcodes
 
@@ -149,17 +149,24 @@ def view_sessions(character_id):
 
   return jsonify(session_schema.dump(sessions, many=True))
   
-@sessions_bp.route('/<int:session_id>', methods=["DELETE"])
+@sessions_bp.route('/delete/<int:session_tracker_id>', methods=["DELETE"])
 @jwt_required()
-def delete_session(session_id):
+def delete_session(session_tracker_id):
   try:
-    user_id = get_jwt_identity()
-    session_tracker = SessionTracker.query.get(session_id)
-    if not session_tracker or session_tracker.user_id != user_id:
-      return jsonify({"error": "Unauthorized or session not found."}), 403
+    # Query the database to initialise the session data requested
+    session = SessionTracker.query.filter_by(id=session_tracker_id).first()
+
+    # If session doesn't exist, return error back to the user
+    if not session:
+      return jsonify({"error": "Session not found."}), 404
+    
+    # Authenticate that the user owns the selected character_id
+    character = Character.query.filter_by(id=session.character_id).first()
+    if not character or character.user_id != int(get_jwt_identity()):
+      return jsonify({"error": "Character not found or you do not have permission to use it."}), 403
 
     # Delete the session tracker (cascade takes care of loot)
-    db.session.delete(session_tracker)
+    db.session.delete(session)
     db.session.commit()
 
     return jsonify({"message": "Session deleted successfully."}), 200
