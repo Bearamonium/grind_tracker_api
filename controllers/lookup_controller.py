@@ -52,7 +52,7 @@ def get_loot():
     return loot_schema.dump(loot)
 
 # Route for obtaining one specific loot item
-@lookup_bp.route('/loot_item', methods=["GET"])
+@lookup_bp.route('/loot/<int:loot_id>', methods=["GET"])
 def get_loot_item(loot_id):
     # Obtain information from the database
     stmt = db.select(Loot).filter_by(id=loot_id)

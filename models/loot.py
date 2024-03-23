@@ -16,5 +16,5 @@ class LootSchema(ma.Schema):
     class Meta: 
         fields = ('id', 'name', 'description', 'drop_rate', 'sale_price')
 
-loot_schema = LootSchema()
-loot_item_schema = LootSchema(many=True)
+loot_schema = LootSchema(many=True)
+loot_item_schema = LootSchema()
