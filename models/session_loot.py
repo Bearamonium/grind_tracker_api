@@ -11,13 +11,14 @@ class SessionLoot(db.Model):
     session_tracker_id = db.Column(db.Integer, db.ForeignKey('session_tracker.id'), nullable=False)
 
     session_tracker = db.relationship('SessionTracker', back_populates='session_loot')
+    loot = db.relationship('Loot', back_populates='session_loot')
 
 class SessionLootSchema(ma.Schema):
 
-    session_tracker = fields.List(fields.Nested('SessionTrackerSchema'))
+    session_tracker = fields.Nested('SessionTrackerSchema', only=['id', 'character_id'])
 
     class Meta:
-        fields = ('id', 'loot_id', 'quantity_obtained')
+        fields = ('id', 'loot_id', 'quantity_obtained', 'session_tracker')
 
 session_loot_schema = SessionLootSchema()
 session_loots_schema = SessionLootSchema(many=True)
