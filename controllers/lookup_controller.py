@@ -16,7 +16,7 @@ lookup_bp = Blueprint('lookup', __name__, url_prefix='/lookup')
 def get_areas():
     # Obtain information from the database
     stmt = db.select(Area).order_by(Area.name.asc())
-    areas = db.session.scalars(stmt)
+    areas = db.session.scalar(stmt)
     # Return result back to the user
     return areas_schema.dump(areas), 200
 
@@ -38,7 +38,7 @@ def get_area(area_id):
 def get_enemies():
     # Obtain information from the database
     stmt = db.select(Enemy).order_by(Enemy.name)
-    enemies = db.session.scalars(stmt)
+    enemies = db.session.scalar(stmt)
     # Return result to the user
     return enemies_schema.dump(enemies), 200
 
@@ -47,7 +47,7 @@ def get_enemies():
 def get_loot():
     # Obtain information from the database
     stmt = db.select(Loot).order_by(Loot.name.asc())
-    loot = db.session.scalars(stmt)
+    loot = db.session.scalar(stmt)
     # Return loot data back to the user
     return loot_schema.dump(loot)
 
