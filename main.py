@@ -1,6 +1,7 @@
 import os
 
 from jwt import ExpiredSignatureError
+from werkzeug.exceptions import BadRequest
 
 from flask import Flask, jsonify
 from init import db, ma, bcrypt, jwt
@@ -16,6 +17,10 @@ def create_app():
     @app.errorhandler(ExpiredSignatureError)
     def expired_jwt_token_handler(err):
         return jsonify({"error": f"Your JWT token has expired. Please login in and regenerate a new pass. {err}"})
+    
+    @app.errorhandler(BadRequest)
+    def bad_request_handler(err):
+        return jsonify({"error": f"Bad Request, please see details: {err.description}"}), 400
 
     db.init_app(app)
     ma.init_app(app)

@@ -16,7 +16,7 @@ lookup_bp = Blueprint('lookup', __name__, url_prefix='/lookup')
 def get_areas():
     # Obtain information from the database
     stmt = db.select(Area).order_by(Area.name.asc())
-    areas = db.session.scalar(stmt)
+    areas = db.session.scalars(stmt)
     # Return result back to the user
     return areas_schema.dump(areas), 200
 
