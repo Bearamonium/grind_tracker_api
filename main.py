@@ -1,6 +1,8 @@
 import os
 
-from flask import Flask
+from jwt import ExpiredSignatureError
+
+from flask import Flask, jsonify
 from init import db, ma, bcrypt, jwt
 
 def create_app(): 
@@ -10,6 +12,10 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"]=os.environ.get("DATABASE_URI")
     app.config["JWT_SECRET_KEY"]=os.environ.get("JWT_SECRET_KEY")
     app.config["JSON_SORT_KEYS"] = False
+
+    @app.errorhandler(ExpiredSignatureError)
+    def expired_jwt_token_handler(err):
+        return jsonify({"error": f"Your JWT token has expired. Please login in and regenerate a new pass. {err}"})
 
     db.init_app(app)
     ma.init_app(app)
