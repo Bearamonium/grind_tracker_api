@@ -34,7 +34,7 @@ class CharacterSchema(ma.Schema):
     level = fields.Integer(required=True, validate=Range(min=1, max=67, error="Level must be between 1 and 67."))
     class_name = LimitedChoiceField(required=True, choices=["Warrior", "Maegu", "Woosa", "Witch", "Wizard", "Beserker", "Hashashin", "Lahn", "Striker", "Mystic", "Shai", "Corsair", "Maehwa", "Musa", "Valkyrie", "Ranger", "Archer", "Sage", "Scholar", "Guardian"])
 
-    session_tracker = fields.List(fields.Nested('SessionTracker', only=['id']))
+    session_tracker = fields.List(fields.Nested('SessionTrackerSchema', only=['id']))
     user = fields.Nested('UserSchema', only=['username'])
 
 character_schema = CharacterSchema()

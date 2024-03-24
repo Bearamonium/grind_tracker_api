@@ -98,7 +98,7 @@ def delete_character(character_id):
         db.session.delete(character)
         db.session.commit()
 
-        return jsonify({"message": f"{character.name} has now been deleted successfully."})
+        return jsonify({"message": f"{character.name} has now been deleted successfully."}), 200
     
     else: 
         return jsonify({"error": f"Character with id {character_id} not found."}), 400
