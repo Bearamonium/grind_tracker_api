@@ -26,10 +26,12 @@ class SessionTrackerSchema(ma.Schema):
     area_id = fields.Integer(required=True)
     character_id = fields.Integer(required=True)
 
-    session_loot = fields.List(fields.Nested('SessionLoot', exclude=['session_tracker']))
+    session_loot = fields.List(fields.Nested('SessionLootSchema', exclude=['session_tracker']))
 
     class Meta:
-        fields=('id', 'start_time', 'end_time', 'duration', 'experience_gain', 'silver_gain', 'area_id', 'character_id')
+        fields=('id', 'start_time', 'end_time', 'duration', 'experience_gain', 'silver_gain', 'area_id', 'character_id', 'session_loot')
         ordered=True
+        partial=True
 
 session_schema = SessionTrackerSchema()
+sessions_schema = SessionTrackerSchema(many=True)

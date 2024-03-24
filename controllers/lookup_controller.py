@@ -1,5 +1,5 @@
 # Flask imports relevant to making requests and responses
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, jsonify
 
 # Import SQLAlchemy
 from init import db

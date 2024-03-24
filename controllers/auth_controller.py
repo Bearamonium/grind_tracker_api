@@ -19,7 +19,7 @@ def marshmallow_verification(err):
 @auth_bp.errorhandler(IntegrityError)
 def psycopg2_not_null_handler(err):
     if err.orig.pgcode == errorcodes.NOT_NULL_VIOLATION:
-        return {"error": f"The {err.orig.diag.column_name} is required."}
+        return {"error": f"The {err.orig.diag.column_name} is required."}, 403
     if err.orig.pgcode == errorcodes.UNIQUE_VIOLATION:
         return {"error": "This email address or username is already in use. Please either try again with another email address/username, or login."}, 409
 
@@ -51,7 +51,7 @@ def login():
         # Create JWT 
         jwt_token = create_access_token(identity=str(user.id), expires_delta=timedelta(days=2))
         # Return token to the user for use
-        return {"email": user.email, "token": jwt_token}
+        return {"email": user.email, "token": jwt_token}, 200
     else: 
         # If user doesn't match password or email doesn't match, return an error to the user
         return {"error": "Invalid email or password. Please try again."}, 401
@@ -66,7 +66,7 @@ def edit_user_details():
 
     user = User.query.filter_by(id=user_id).first()
     if not user: 
-        return jsonify({"error": "User details not found. Please try again."}), 400
+        return jsonify({"error": "User details not found. Please try again."}), 404
     
     user.username = body_data.get('username') or user.username,
     user.email = body_data.get('email') or user.email,
@@ -74,7 +74,7 @@ def edit_user_details():
 
     db.session.commit()
 
-    return jsonify(edited_user_schema.dump(user))
+    return jsonify(edited_user_schema.dump(user)), 201
 
 @auth_bp.route("/delete", methods=["DELETE"])
 @jwt_required()
@@ -89,4 +89,4 @@ def delete_user():
     db.session.delete(user)
     db.session.commit()
 
-    return jsonify({"message": "Your user details have been deleted successfully. If you would like to use the api again, please re-register."})
+    return jsonify({"message": "Your user details have been deleted successfully. If you would like to use the api again, please re-register."}), 418
