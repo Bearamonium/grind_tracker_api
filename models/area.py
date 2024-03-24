@@ -12,7 +12,7 @@ class Area(db.Model):
 
 class AreaSchema(ma.Schema):
     class Meta:
-        ordered = True      
+        fields = ('id', 'name', 'location', 'enemies')      
 
     id = fields.Integer()
     name = fields.String()
