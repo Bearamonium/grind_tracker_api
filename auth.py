@@ -1,8 +1,11 @@
 from flask_jwt_extended import get_jwt_identity
-from flask import abort, jsonify
+from flask import Flask, jsonify
 from models.users import User
 from models.character import Character
 from init import db
+
+def expired_jwt_token_handler(err):
+    return jsonify({"error": f"Your JWT token has expired. Please login in and regenerate a new pass. {err}"})
 
 def authorise_as_user():
     user_id = int(get_jwt_identity())

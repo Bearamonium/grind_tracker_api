@@ -19,5 +19,6 @@ class UserSchema(ma.Schema):
 
     characters = fields.List(fields.Nested('CharacterSchema', exclude=['user']))
 
+edited_user_schema = UserSchema(exclude=['characters'])
 user_schema = UserSchema(exclude=['password'])
 users_schema = UserSchema(many=True, exclude=['password'])
